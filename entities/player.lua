@@ -80,7 +80,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-   love.graphics.draw(self.img, self.x, self.y)
+   love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
 
 return Player
