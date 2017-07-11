@@ -16,7 +16,9 @@ end
 
 function InputSystem:keyPressed(key)
    callback = self.callbacks[key]
-   callback()
+   if callback ~= nil then
+      callback()
+   end
 end
 
 return InputSystem
