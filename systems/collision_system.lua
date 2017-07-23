@@ -24,3 +24,10 @@ function CollisionSystem:resolve(collision_component, position_component, physic
    -- Ignore collisions list for now
    return position_component
 end
+
+function CollisionSystem:getAABB(collision_component)
+   local x, y, w, h = self.world:getRect(collision_component)
+   return {x, y, w, h}
+end
+
+return CollisionSystem
