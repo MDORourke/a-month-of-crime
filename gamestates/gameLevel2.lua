@@ -67,8 +67,8 @@ function gameLevel2:update(dt)
    self.input:update()
 
    for _, entity in ipairs(self.entities) do
-      if entity:has_components("position", "physics") then
-         entity.components["position"], entity.components["physics"] = self.physics:update(dt, entity.components["position"], entity.components["physics"])
+      if entity:has_components("physics") then
+         entity.components["physics"] = self.physics:update(dt, entity.components["physics"])
       end
 
       if entity:has_components("collision", "position", "physics") then
