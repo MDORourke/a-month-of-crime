@@ -10,7 +10,7 @@ env:
 
 before_install:
    # Uses sed to replace the SSH URL for submodules with the public URL
-   - sed -i 's/git:github.com:/https:\/\/github.com\//' .gitmodules
+   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
    - git submodule update --init --recursive
    - pip install hererocks
    - hererocks lua_install -r^ --$LUA
