@@ -20,7 +20,7 @@ install:
    - luarocks install busted
 
 script:
-   - busted --verbose
+   - busted --verbose specs
 
 git:
    submodules: false
