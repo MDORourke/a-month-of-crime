@@ -16,5 +16,10 @@ before_install:
    - hererocks lua_install -r^ --$LUA
    - export PATH=$PATH:$PWD/lua_install/bin
 
+install:
+
 git:
    submodules: false
+
+notifications:
+   email: false
