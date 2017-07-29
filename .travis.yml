@@ -12,3 +12,9 @@ before_install:
    - pip install hererocks
    - hererocks lua_install -r^ --$LUA
    - export PATH=$PATH:$PWD/lua_install/bin
+
+git:
+   submodules: false
+   # Uses sed to replace the SSH URL for submodules with the public URL
+   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+   - git submodule update --init --recursive
