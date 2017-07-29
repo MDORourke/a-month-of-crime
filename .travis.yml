@@ -23,7 +23,7 @@ install:
    - luarocks install luacov-coveralls
 
 script:
-   - luacheck --std max+busted .
+   - luacheck --std max+busted . | test ${PIPESTATUS[0]} -le 1
    - busted --verbose --coverage specs
 
 after_success:
