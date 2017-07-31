@@ -27,7 +27,7 @@ script:
    - busted --verbose --coverage specs
 
 after_success:
-   - luacov-coveralls --exclude $TRAVIS_BUILD_DIR/lua_install --exclude libs
+   - luacov-coveralls --exclude ../lua_install --exclude libs
 
 git:
    submodules: false
