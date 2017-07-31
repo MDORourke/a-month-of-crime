@@ -1,0 +1,6 @@
+[submodule "libs/bump"]
+	path = libs/bump
+	url = git@github.com:kikito/bump.lua
+[submodule "libs/hump"]
+	path = libs/hump
+	url = git@github.com:vrld/hump

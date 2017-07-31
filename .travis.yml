@@ -1,0 +1,36 @@
+language: python
+sudo: false
+
+env:
+   - LUA="lua=5.1"
+   - LUA="lua=5.2"
+   - LUA="lua=5.3"
+   - LUA="luajit=2.0"
+   - LUA="luajit=2.1"
+
+before_install:
+   # Uses sed to replace the SSH URL for submodules with the public URL
+   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+   - git submodule update --init --recursive
+   - pip install hererocks
+   - hererocks lua_install -r^ --$LUA
+   - export PATH=$PATH:$PWD/lua_install/bin
+
+install:
+   - luarocks install luacheck
+   - luarocks install busted
+   - luarocks install luacov
+   - luarocks install luacov-coveralls
+
+script:
+   - luacheck --std max+busted+love . --exclude-files $TRAVIS_BUILD_DIR/libs $TRAVIS_BUILD_DIR/lua_install | tee ; test ${PIPESTATUS[0]} -le 1
+   - busted --verbose --coverage specs
+
+after_success:
+   - luacov-coveralls --exclude ../lua_install --exclude libs
+
+git:
+   submodules: false
+
+notifications:
+   email: false
