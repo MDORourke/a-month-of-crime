@@ -1,6 +1,6 @@
 Gamestate = require 'libs.hump.gamestate'
 
-Signal = require 'libs.hump.signal' -- Put this into a separate class later
+Signal = require 'libs.hump.signal'
 
 local sti = require 'libs.sti.sti'
 
@@ -15,9 +15,11 @@ local InputSystem = require 'systems.input_system'
 local PhysicsSystem = require 'systems.physics_system'
 local CollisionSystem = require 'systems.collision_system'
 
-local gameLevel3 = Gamestate.new()
+local KeyBindings = require 'utils/key_bindings'
 
-function gameLevel3:enter()
+local BaseLevel = {}
+
+function BaseLevel:enter(old_state, map_name)
    self.entities = {}
 
    self.debug = false
@@ -50,18 +52,17 @@ function gameLevel3:enter()
    Signal.register("moveLeft", function() self.player.components["physics"].x_velocity = self.player.components["physics"].x_velocity - 3 end)
    Signal.register("toggleDebug", function() self.debug = not self.debug end)
 
-   self.input:register("escape", "press", "quit")
-   self.input:register("d", "hold", "moveRight")
-   self.input:register("a", "hold", "moveLeft")
-   self.input:register("x", "press", "toggleDebug")
+   for key, bindings in pairs(KeyBindings) do
+      for _, options in pairs(bindings) do
+         self.input:register(key, options[1], options[2])
+      end
+   end
 
-   self.map = sti('assets/test.lua', { 'bump' })
-
+   self.map = sti('assets/'..map_name..'.lua', { 'bump' })
    self.map:bump_init(self.collision.world)
-
 end
 
-function gameLevel3:update(dt)
+function BaseLevel:update(dt)
    self.input:update()
 
    for _, entity in ipairs(self.entities) do
@@ -77,7 +78,7 @@ function gameLevel3:update(dt)
    self.map:update(dt)
 end
 
-function gameLevel3:draw()
+function BaseLevel:draw()
    love.graphics.setColor(255, 255, 255)
 
    for _, entity in ipairs(self.entities) do
@@ -92,15 +93,14 @@ function gameLevel3:draw()
    else
       self.map:draw()
    end
-
 end
 
-function gameLevel3:keypressed(key)
+function BaseLevel:keypressed(key)
    self.input:keyPressed(key)
 end
 
-function gameLevel3:keyreleased(key)
+function BaseLevel:keyreleased(key)
    self.input:keyReleased(key)
 end
 
-return gameLevel3
+return BaseLevel

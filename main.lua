@@ -1,12 +1,10 @@
+package.path = package.path .. ";src/?.lua"
+
 Gamestate = require 'libs.hump.gamestate'
 
-local mainMenu = require 'gamestates.mainmenu'
-local gameLevel1 = require 'gamestates.gameLevel1'
-local gameLevel2 = require 'gamestates.gameLevel2'
-local gameLevel3 = require 'gamestates.gameLevel3'
-local pause = require 'gamestates.pause'
+BaseLevel = require 'gamestates.baseLevel'
 
 function love.load()
    Gamestate.registerEvents()
-   Gamestate.switch(gameLevel3)
+   Gamestate.switch(BaseLevel, "test")
 end
