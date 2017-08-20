@@ -21,6 +21,10 @@ function CollisionSystem:resolve(collision_component, position_component, physic
    position_component.x = x
    position_component.y = y
 
+   -- Reset velocities
+   physics_component.x_velocity = 0
+   physics_component.y_velocity = 0
+
    -- Ignore collisions list for now
    return position_component
 end

@@ -2,15 +2,20 @@ local Class = require 'libs.hump.class'
 
 local GraphicsSystem = Class{}
 
-function GraphicsSystem:draw(position_component, graphics_component, size_component)
-   -- If the graphics component is supplied, draw an image
-   if graphics_component ~= nil then
-      love.graphics.draw(graphics_component.img, position_component.x, position_component.y)
-   -- Otherwise, if the size component is supplied, draw a rectangle
-   elseif size_component ~= nil then
-      love.graphics.rectangle('fill', position_component.x, position_component.y, size_component.width, size_component.height)
-   -- If neither, then nothing happens
-   end
+function GraphicsSystem:draw_animation(position_component, sprite_component, animation_component)
+   animation_component.current_animation:draw(sprite_component.img, position_component.x, position_component.y)
+end
+
+function GraphicsSystem:draw_image(position_component, sprite_component)
+   love.graphics.draw(sprite_component.img, position_component.x, position_component.y)
+end
+
+function GraphicsSystem:draw_rectangle(position_component, size_component)
+   love.graphics.rectangle('fill', position_component.x, position_component.y, size_component.width, size_component.height)
+end
+
+function GraphicsSystem:update_animation(dt, animation_component)
+   animation_component.current_animation:update(dt)
 end
 
 return GraphicsSystem
