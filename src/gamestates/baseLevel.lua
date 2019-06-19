@@ -18,8 +18,9 @@ local GraphicsSystem = require 'systems.graphics_system'
 local InputSystem = require 'systems.input_system'
 local PhysicsSystem = require 'systems.physics_system'
 local CollisionSystem = require 'systems.collision_system'
+local CameraSystem = require 'systems.camera_system'
 
-local KeyBindings = require 'utils/key_bindings'
+local KeyBindings = require 'utils.key_bindings'
 
 local BaseLevel = {}
 
@@ -54,6 +55,8 @@ function BaseLevel:enter(old_state, map_name)
    self.input = InputSystem()
 
    self.collision = CollisionSystem(16)
+
+   self.camera = CameraSystem(self.player.components["position"])
 
    for _, entity in ipairs(self.entities) do
       if entity:has_components("collision", "position", "size") then
@@ -103,10 +106,15 @@ function BaseLevel:update(dt)
    end
 
    self.map:update(dt)
+
+   self.camera:update_position(self.player.components["position"])
 end
 
 function BaseLevel:draw()
    love.graphics.setColor(255, 255, 255)
+
+   -- Draw the level
+   self.camera:activate()
 
    for _, entity in ipairs(self.entities) do
       if entity:has_components("position", "sprite", "animation") then
@@ -124,6 +132,10 @@ function BaseLevel:draw()
    else
       self.map:draw()
    end
+
+   self.camera:deactivate()
+
+   -- Draw the HUD
 end
 
 function BaseLevel:keypressed(key)
